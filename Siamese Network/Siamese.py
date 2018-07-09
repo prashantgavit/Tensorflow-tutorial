@@ -1,6 +1,6 @@
 import tensorflow as tf
 
-def create_placeholder(n_H0, n_W0, n_C0, n_Y):
+def create_placeholder(n_H0, n_W0, n_C0):
     X_o = tf.placeholder(tf.float32, shape = [None, n_H0, n_W0, n_C0])
     X_c = tf.placeholder(tf.float32, shape = [None, n_H0, n_W0, n_C0])
     Y = tf.placeholder(tf.float32, shape = [None , n_H0, n_W0])
@@ -47,6 +47,15 @@ def forward_propogation(X, parameters):
 
 def get_Euclidian_Distnace(X_o,X_c):
     return(tf.norm(X_o-X_c, ord= 'euclidean', axis =3))
+
+def get_Lu(D):
+    return (0.5*tf.square(D))
+
+def get_Lc(D):
+    return (0.5*tf.maximum(tf.zeros_like(D), 1-tf.square(D)))
+
+def get_loss(Y,Lu,Lc):
+    return tf.reduce_sum(tf.multiply(1-Y,Lu)+tf.multiply(Y,Lc))
     
 
 
